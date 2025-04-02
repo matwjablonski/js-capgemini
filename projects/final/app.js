@@ -1,6 +1,6 @@
 console.log("Witaj w naszej aplikacji książkowej!");
 
-const books = [
+const rawBooks = [
   {
     id: 1,
     title: "W pustyni i w puszczy",
@@ -51,21 +51,28 @@ const books = [
   }
 ];
 
-function checkIfFavorite(book) {
-  // if (book.isFavorite) {
-  //   return true;
-  // }
+const books = rawBooks.map((book) => ({
+  ...book,
+  owner: "Mateusz Jabłoński",
+}));
 
-  // return false;
+console.log(books);
 
-  return book.isFavorite;
-}
+// function checkIfFavorite(book) {
+//   // if (book.isFavorite) {
+//   //   return true;
+//   // }
 
-for (let book of books) {
-  if (checkIfFavorite(book)) {
-    console.log('Ulubiona książka: ' + book.title);
-  }
-}
+//   // return false;
+
+//   return book.isFavorite;
+// }
+
+// for (let book of books) {
+//   if (checkIfFavorite(book)) {
+//     console.log('Ulubiona książka: ' + book.title);
+//   }
+// }
 
 function countTotalReadTimes(booksToCount) {
   let total = 0;
@@ -77,52 +84,78 @@ function countTotalReadTimes(booksToCount) {
   return total;
 }
 
+function countTotalReadTimes2(booksToCount) {
+  // return booksToCount.reduce((subValue, currItem) => {
+  //   return subValue + currItem.readTimes;
+  // }, 0);
+
+  return booksToCount.reduce((subValue, currItem) => subValue + currItem.readTimes, 0);
+}
+
 const total1 = countTotalReadTimes(books);
+const total2 = countTotalReadTimes2(books);
 
-console.log('Nasi czytelnicy czytali ' + total1 + ' razy.');
+// console.log(total1, total2);
 
-function addNewBook(title, author, isFavorite, category) {
-  const book = {
-    title,
-    author,
-    isFavorite,
-    readTimes: 2,
-    category, 
-    id: books.length + 1,
-  };
-
-  books.push(book);
-
-  return book;
+const findByTitle = function (title) {
+  return books.filter((book) => book.title.includes(title));
 }
 
-addNewBook(
-  "Nowa książka",
-  "Jan Kowalski",
-  true,
-  "Fantastyka"
-);
+const foundBook = findByTitle("a");
 
-addNewBook(
-  "JS dla testerów",
-  "Mateusz Jabłoński",
-  true,
-  "Sci-Fi"
-)
+console.log('foundBook', foundBook)
 
-// console.log(books);
-
-const total2 = countTotalReadTimes(books);
-
-console.log('Nasi czytelnicy czytali ' + total2 + ' razy.');
-
-function switchIsFavorite(id) {
-  for (let book of books) {
-    if (book.id === id) {
-      book.isFavorite = !book.isFavorite;
-      break;
-    }
+books.forEach((book) => {
+  if (book.isFavorite) {
+    console.log('Ulubiona książka: ' + book.title);
   }
-}
+});
 
-switchIsFavorite(8);
+// // console.log('Nasi czytelnicy czytali ' + total1 + ' razy.');
+
+// function addNewBook(title, author, isFavorite, category) {
+//   const book = {
+//     title,
+//     author,
+//     isFavorite,
+//     readTimes: 2,
+//     category, 
+//     id: books.length + 1,
+//   };
+
+//   books.push(book);
+
+//   return book;
+// }
+
+// addNewBook(
+//   "Nowa książka",
+//   "Jan Kowalski",
+//   true,
+//   "Fantastyka"
+// );
+
+// addNewBook(
+//   "JS dla testerów",
+//   "Mateusz Jabłoński",
+//   true,
+//   "Sci-Fi"
+// )
+
+// // console.log(books);
+
+// const total2 = countTotalReadTimes(books);
+
+// // console.log('Nasi czytelnicy czytali ' + total2 + ' razy.');
+
+// function switchIsFavorite(id) {
+//   for (let book of books) {
+//     if (book.id === id) {
+//       book.isFavorite = !book.isFavorite;
+//       break;
+//     }
+//   }
+// }
+
+// switchIsFavorite(8);
+
