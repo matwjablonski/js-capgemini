@@ -67,25 +67,33 @@ for (let book of books) {
   }
 }
 
-let totalReadTimes = 0;
+function countTotalReadTimes(booksToCount) {
+  let total = 0;
 
-for (let i = 0; i < books.length; i++) {
-  totalReadTimes += books[i].readTimes;
+  for (let i = 0; i < booksToCount.length; i++) {
+    total += booksToCount[i].readTimes;
+  }
+
+  return total;
 }
 
-console.log('Nasi czytelnicy czytali ' + totalReadTimes + ' razy.');
+const total1 = countTotalReadTimes(books);
+
+console.log('Nasi czytelnicy czytali ' + total1 + ' razy.');
 
 function addNewBook(title, author, isFavorite, category) {
   const book = {
     title,
     author,
     isFavorite,
-    readTimes: 0,
+    readTimes: 2,
     category, 
     id: books.length + 1,
   };
 
   books.push(book);
+
+  return book;
 }
 
 addNewBook(
@@ -95,4 +103,26 @@ addNewBook(
   "Fantastyka"
 );
 
-console.log(books);
+addNewBook(
+  "JS dla testerów",
+  "Mateusz Jabłoński",
+  true,
+  "Sci-Fi"
+)
+
+// console.log(books);
+
+const total2 = countTotalReadTimes(books);
+
+console.log('Nasi czytelnicy czytali ' + total2 + ' razy.');
+
+function switchIsFavorite(id) {
+  for (let book of books) {
+    if (book.id === id) {
+      book.isFavorite = !book.isFavorite;
+      break;
+    }
+  }
+}
+
+switchIsFavorite(8);
