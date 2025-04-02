@@ -14,7 +14,7 @@ const books = [
     title: "Pan Tadeusz",
     author: "Adam Mickiewicz",
     isFavorite: true,
-    readTimes: 3,
+    readTimes: null,
     category: "Epopeja",
   },
   {
@@ -51,9 +51,19 @@ const books = [
   }
 ];
 
+function checkIfFavorite(book) {
+  // if (book.isFavorite) {
+  //   return true;
+  // }
+
+  // return false;
+
+  return book.isFavorite;
+}
+
 for (let book of books) {
-  if (book.isFavorite) {
-    console.log(`Ulubiona książka: ${book.title}`);
+  if (checkIfFavorite(book)) {
+    console.log('Ulubiona książka: ' + book.title);
   }
 }
 
@@ -64,3 +74,25 @@ for (let i = 0; i < books.length; i++) {
 }
 
 console.log('Nasi czytelnicy czytali ' + totalReadTimes + ' razy.');
+
+function addNewBook(title, author, isFavorite, category) {
+  const book = {
+    title,
+    author,
+    isFavorite,
+    readTimes: 0,
+    category, 
+    id: books.length + 1,
+  };
+
+  books.push(book);
+}
+
+addNewBook(
+  "Nowa książka",
+  "Jan Kowalski",
+  true,
+  "Fantastyka"
+);
+
+console.log(books);
