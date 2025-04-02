@@ -9,6 +9,58 @@ const books = [
     readTimes: 0,
     category: "Przygodowa",
   },
+  {
+    id: 2,
+    title: "Pan Tadeusz",
+    author: "Adam Mickiewicz",
+    isFavorite: true,
+    readTimes: 3,
+    category: "Epopeja",
+  },
+  {
+    id: 3,
+    title: "Król Edyp",
+    author: "Sofokles",
+    isFavorite: false,
+    readTimes: 1,
+    category: "Tragedia",
+  },
+  {
+    id: 4,
+    title: "Zbrodnia i kara",
+    author: "Fiodor Dostojewski",
+    isFavorite: true,
+    readTimes: 5,
+    category: "Powieść psychologiczna",
+  },
+  {
+    id: 5,
+    title: "Mistrz i Małgorzata",
+    author: "Michaił Bułhakow",
+    isFavorite: false,
+    readTimes: 2,
+    category: "Fantastyka",
+  },
+  {
+    id: 6,
+    title: "Wielki Gatsby",
+    author: "F. Scott Fitzgerald",
+    isFavorite: true,
+    readTimes: 4,
+    category: "Powieść amerykańska",
+  }
 ];
 
-console.log(books);
+for (let book of books) {
+  if (book.isFavorite) {
+    console.log(`Ulubiona książka: ${book.title}`);
+  }
+}
+
+let totalReadTimes = 0;
+
+for (let i = 0; i < books.length; i++) {
+  totalReadTimes += books[i].readTimes;
+}
+
+console.log('Nasi czytelnicy czytali ' + totalReadTimes + ' razy.');
