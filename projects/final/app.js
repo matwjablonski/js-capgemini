@@ -7,57 +7,6 @@ const generateRandomId = function (length = 16) {
   return id;
 }
 
-const rawBooks = [
-  {
-    title: "W pustyni i w puszczy",
-    author: "Henryk Sienkiewicz",
-    isFavorite: false,
-    readTimes: 0,
-    category: "Przygodowa",
-  },
-  {
-    title: "Pan Tadeusz",
-    author: "Adam Mickiewicz",
-    isFavorite: true,
-    readTimes: null,
-    category: "Epopeja",
-  },
-  {
-    title: "Król Edyp",
-    author: "Sofokles",
-    isFavorite: false,
-    readTimes: 1,
-    category: "Tragedia",
-  },
-  {
-    title: "Zbrodnia i kara",
-    author: "Fiodor Dostojewski",
-    isFavorite: true,
-    readTimes: 5,
-    category: "Powieść psychologiczna",
-  },
-  {
-    title: "Mistrz i Małgorzata",
-    author: "Michaił Bułhakow",
-    isFavorite: false,
-    readTimes: 2,
-    category: "Fantastyka",
-  },
-  {
-    title: "Wielki Gatsby",
-    author: "F. Scott Fitzgerald",
-    isFavorite: true,
-    readTimes: 4,
-    category: "Powieść amerykańska",
-  }
-];
-
-const books = rawBooks.map((book) => ({
-  ...book,
-  id: generateRandomId(),
-  owner: "Mateusz Jabłoński",
-}));
-
 // const prepareForm = (app) => {
 //   const form = document.createElement("form");
 //   form.classList.add("book-form");
@@ -244,9 +193,25 @@ class BooksList extends BooksListAbstract {
 
 class App {
   constructor(container) {
-    new BooksList(container, books);
+    this.container = container;
 
+    this.fetchBooks();
     this.initGlobalEvents();
+  }
+
+  async fetchBooks() {
+    try {
+      const response = await fetch('./data.json');
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const data = await response.json();
+
+      this.books = data;
+      new BooksList(this.container, this.books);
+    } catch (error) {
+
+    }
   }
 
   initGlobalEvents() {
@@ -300,3 +265,12 @@ new App(app);
 
 //   return book;
 // }
+
+// class AppError extends Error {
+//   constructor(message, moduleName = 'App') {
+//     super(message);
+//     this.name = '[Moduł ' + moduleName + ']: ';
+//   }
+// }
+
+// throw new AppError('Nie można utworzyć instancji klasy AppError', 'App');

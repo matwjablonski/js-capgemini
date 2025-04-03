@@ -146,31 +146,41 @@
 
 // test; // getter
 
-class BooksListAbstract {
-  constructor() {
-    if (new.target === BooksListAbstract) {
-      throw new Error("Nie można utworzyć instancji klasy BooksList");
-    }
-  }
+// class BooksListAbstract {
+//   constructor() {
+//     if (new.target === BooksListAbstract) {
+//       throw new Error("Nie można utworzyć instancji klasy BooksList");
+//     }
+//   }
 
-  addBook() {
-    throw new Error("aaa");
+//   addBook() {
+//     throw new Error("aaa");
+//   }
+// }
+
+// class BooksList extends BooksListAbstract {
+//   constructor() {
+//     super();
+//   }
+
+//   addBook() {
+//     console.log("Dodaj książkę");
+//   }
+// }
+
+// let counter = 0;
+
+// app.addEventListener("click", (event) => {
+//   counter++;
+//   console.log("Licznik kliknięć:", counter);
+// }, { once: true });
+
+class AppError extends Error {
+  constructor(message, moduleName = 'App') {
+    super(message);
+    this.name = '[Moduł ' + moduleName + ']';
   }
 }
 
-class BooksList extends BooksListAbstract {
-  constructor() {
-    super();
-  }
-
-  addBook() {
-    console.log("Dodaj książkę");
-  }
-}
-
-let counter = 0;
-
-app.addEventListener("click", (event) => {
-  counter++;
-  console.log("Licznik kliknięć:", counter);
-}, { once: true });
+// throw new Error('Nie można utworzyć instancji klasy AppError');
+throw new AppError('Nie można utworzyć instancji klasy AppError');
