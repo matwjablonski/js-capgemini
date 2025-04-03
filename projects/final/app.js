@@ -1,4 +1,4 @@
-const generateRandomId = function (length = 16) {
+const generateRandomId = function (length = 10) {
   const id = Array.from(
     { length }, 
     () => Math.floor(Math.random() * 10)
@@ -7,52 +7,71 @@ const generateRandomId = function (length = 16) {
   return id;
 }
 
-// const prepareForm = (app) => {
-//   const form = document.createElement("form");
-//   form.classList.add("book-form");
+class AppError extends Error {
+  constructor(message, moduleName = 'App') {
+    super(message);
+    this.name = '[Moduł ' + moduleName + ']: ';
+  }
+}
 
-//   const titleInput = document.createElement("input");
-//   titleInput.type = "text";
-//   titleInput.name = 'title';
-//   titleInput.placeholder = "Tytuł książki";
-//   form.appendChild(titleInput);
+class BookForm {
+  constructor(container, addBookCallback) {
+    this.container = container;
+    this.prepareForm();
+    this.prepareSubmitAction(addBookCallback);
+  }
 
-//   const authorInput = document.createElement("input");
-//   authorInput.type = "text";
-//   authorInput.placeholder = "Autor książki";
-//   authorInput.name = 'author';
-//   form.appendChild(authorInput);
+  prepareForm() {
+    const form = document.createElement("form");
+    form.classList.add("book-form");
 
-//   const categoryInput = document.createElement("input");
-//   categoryInput.type = "text";
-//   categoryInput.name = 'category';
-//   categoryInput.placeholder = "Kategoria książki";
-//   form.appendChild(categoryInput);
+    const titleInput = this.prepareField("title", "Tytuł książki");
+    const authorInput = this.prepareField("author", "Autor książki");
+    const categoryInput = this.prepareField("category", "Kategoria książki");
 
-//   const submitButton = document.createElement("button");
-//   submitButton.type = "submit";
-//   submitButton.textContent = "Dodaj książkę";
-//   form.appendChild(submitButton);
+    form.appendChild(titleInput);
+    form.appendChild(authorInput);
+    form.appendChild(categoryInput);
 
-//   form.addEventListener("submit", (event) => {
-//     event.preventDefault();
-//     const data = new FormData(event.target);
+    const submitButton = document.createElement("button");
+    submitButton.type = "submit";
+    submitButton.textContent = "Dodaj książkę";
+    form.appendChild(submitButton);
 
-//     const book = addNewBook(
-//       data.get("title"),
-//       data.get("author"),
-//       false,
-//       data.get("category")
-//     );
+    this.form = form;
+    this.container.insertAdjacentElement('beforeend', form);
+  }
+
+  prepareField(name, placeholder) {
+    const field = document.createElement("input");
+    field.type = "text";
+    field.name = name;
+    field.placeholder = placeholder;
     
-//     const bookItem = prepareBookItem(book);
-//     list.appendChild(bookItem);
-//   });
+    return field;
+  }
 
-//   app.appendChild(form);
-// }
+  prepareSubmitAction(addBookCallback) {
+    this.form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const formData = new FormData(event.target);
 
-// prepareForm(app);
+      const title = formData.get("title");
+      const author = formData.get("author");
+      const category = formData.get("category");
+
+      addBookCallback({
+        title,
+        author,
+        category,
+        isFavorite: false,
+        readTimes: 0,
+        id: generateRandomId(),
+        owner: "Mateusz Jabłoński",
+      })
+    });
+  }
+}
 
 class BooksListAbstract {
   constructor(container, data) {
@@ -189,6 +208,12 @@ class BooksList extends BooksListAbstract {
     this.booksList = list;
     this.container.appendChild(list);
   }
+
+  addNewBook(book) {
+    this.books.push(book);
+    const bookInstance = new Book(book);
+    this.booksList.appendChild(bookInstance.container);
+  }
 }
 
 class App {
@@ -203,15 +228,20 @@ class App {
     try {
       const response = await fetch('./data.json');
       if (!response.ok) {
-        throw new Error('Network response was not ok');
+        throw new AppError('Network response was not ok');
       }
       const data = await response.json();
 
       this.books = data;
-      new BooksList(this.container, this.books);
+      this.prepareBooks();
     } catch (error) {
 
     }
+  }
+
+  prepareBooks() {
+    this.bookListInstance = new BooksList(this.container, this.books);
+    new BookForm(this.container, this.bookListInstance.addNewBook.bind(this.bookListInstance));
   }
 
   initGlobalEvents() {
@@ -249,28 +279,3 @@ class App {
 
 const app = document.getElementById("app");
 new App(app);
-
-// function addNewBook(title, author, isFavorite, category) {
-//   const book = {
-//     title,
-//     author,
-//     isFavorite,
-//     readTimes: 0,
-//     category, 
-//     id: generateRandomId(),
-//     owner: "Mateusz Jabłoński",
-//   };
-
-//   books.push(book);
-
-//   return book;
-// }
-
-// class AppError extends Error {
-//   constructor(message, moduleName = 'App') {
-//     super(message);
-//     this.name = '[Moduł ' + moduleName + ']: ';
-//   }
-// }
-
-// throw new AppError('Nie można utworzyć instancji klasy AppError', 'App');
