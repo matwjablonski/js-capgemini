@@ -107,26 +107,48 @@ const prepareBooksList = (app) => {
   });
 
   app.appendChild(list);
+
+  return list;
 }
 
 const app = document.getElementById("app");
-prepareBooksList(app);
+const list = prepareBooksList(app);
+
+function addNewBook(title, author, isFavorite, category) {
+  const book = {
+    title,
+    author,
+    isFavorite,
+    readTimes: 0,
+    category, 
+    id: generateRandomId(),
+    owner: "Mateusz Jabłoński",
+  };
+
+  books.push(book);
+
+  return book;
+}
+
 const prepareForm = (app) => {
   const form = document.createElement("form");
   form.classList.add("book-form");
 
   const titleInput = document.createElement("input");
   titleInput.type = "text";
+  titleInput.name = 'title';
   titleInput.placeholder = "Tytuł książki";
   form.appendChild(titleInput);
 
   const authorInput = document.createElement("input");
   authorInput.type = "text";
   authorInput.placeholder = "Autor książki";
+  authorInput.name = 'author';
   form.appendChild(authorInput);
 
   const categoryInput = document.createElement("input");
   categoryInput.type = "text";
+  categoryInput.name = 'category';
   categoryInput.placeholder = "Kategoria książki";
   form.appendChild(categoryInput);
 
@@ -136,11 +158,21 @@ const prepareForm = (app) => {
   form.appendChild(submitButton);
 
   form.addEventListener("submit", (event) => {
-    // prevent default form submission
-    // event.preventDefault();
+    event.preventDefault();
+    const data = new FormData(event.target);
 
-    // console.log(titleInput.value)
+    const book = addNewBook(
+      data.get("title"),
+      data.get("author"),
+      false,
+      data.get("category")
+    );
+    
+    const bookItem = prepareBookItem(book);
+    list.appendChild(bookItem);
   });
+
+  
 
   app.appendChild(form);
 }
@@ -174,3 +206,13 @@ window.addEventListener('resize', () => {
     message.style.display = "none";
   }
 })
+
+class BooksList {
+  constructor() {
+    if (new.target === BooksList) {
+      throw new Error("Nie można utworzyć instancji klasy BooksList");
+    }
+  }
+}
+
+new BooksList();

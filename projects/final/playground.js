@@ -100,3 +100,74 @@
 // switchIsFavorite(8);
 
 
+
+
+// function Course(name, duration) {
+//   this.name = name;
+//   this.duration = duration;
+// }
+
+// Course.prototype.getDuration = function () {
+//   return this.duration;
+// }
+
+// new Course('JavaScript', 30);
+// new Course('Python', 40);
+
+// class Course {
+//   constructor(name, duration) {
+//     this.name = name;
+//     this.duration = duration;
+//   }
+
+//   getDuration() {
+//     return this.duration;
+//   }
+// }
+
+// new Course('JavaScript', 30);
+// new Course('Python', 40);
+
+// class Test {
+//   // public
+//   getName() {
+//     this.#getRealName();
+//   }
+
+
+//   // private
+//   #getRealName() {
+
+//   }
+// }
+
+
+// const test = "dasdas"; // setter
+
+// test; // getter
+
+class BooksListAbstract {
+  constructor() {
+    if (new.target === BooksListAbstract) {
+      throw new Error("Nie można utworzyć instancji klasy BooksList");
+    }
+  }
+
+  addBook() {
+    throw new Error("aaa");
+  }
+}
+
+class BooksList extends BooksListAbstract {
+  constructor() {
+    super();
+  }
+
+  addBook() {
+    console.log("Dodaj książkę");
+  }
+}
+
+const l = new BooksList();
+
+l.addBook();
