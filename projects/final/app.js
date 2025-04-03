@@ -71,11 +71,17 @@ const prepareBookItem = (book) => {
   bookAuthor.textContent = book.author;
   bookItem.appendChild(bookAuthor);
 
+  const bookCategory = document.createElement("p");
+  bookCategory.textContent = 'Kategoria: ' + book.category;
+  bookCategory.classList.add("book-category");
+  bookItem.appendChild(bookCategory);
+
   return bookItem;
 }
 
 const prepareBooksList = (app) => {
   const list = document.createElement("ul");
+  list.classList.add("books-list");
 
   books.forEach((book) => {
     const bookItem = prepareBookItem(book);
