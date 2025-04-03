@@ -245,32 +245,45 @@ class BooksList extends BooksListAbstract {
 class App {
   constructor(container) {
     new BooksList(container, books);
+
+    this.initGlobalEvents();
+  }
+
+  initGlobalEvents() {
+    this.checkRwdMode();
+  }
+
+  checkRwdMode() {
+    this.prepareRwdWarning();
+    this.displayWarningForRwdMode();
+
+    window.addEventListener("resize", () => {
+      this.displayWarningForRwdMode();
+    });
+  }
+
+  displayWarningForRwdMode() {
+    if (window.innerWidth < 800) {
+      this.message.style.display = "block";
+    } else {
+      this.message.style.display = "none";
+    }
+  }
+
+  prepareRwdWarning() {
+    const message = document.createElement("p");
+    message.textContent = "Nasza aplikacja nie obsługuje RWD!";
+    message.style.color = "red";
+    message.style.border = "1px solid red";
+    message.style.padding = "10px"
+    document.body.insertAdjacentElement("beforebegin", message);
+
+    this.message = message;
   }
 }
 
 const app = document.getElementById("app");
 new App(app);
-
-// const message = document.createElement("p");
-// message.textContent = "Nasza aplikacja nie obsługuje RWD!";
-// message.style.color = "red";
-// message.style.border = "1px solid red";
-// message.style.padding = "10px"
-// document.body.insertAdjacentElement("beforebegin", message);
-
-// if (window.innerWidth < 800) {
-//   message.style.display = "block";
-// } else {
-//   message.style.display = "none";
-// }
-
-// window.addEventListener('resize', () => {
-//   if (window.innerWidth < 800) {
-//     message.style.display = "block";
-//   } else {
-//     message.style.display = "none";
-//   }
-// })
 
 // function addNewBook(title, author, isFavorite, category) {
 //   const book = {
