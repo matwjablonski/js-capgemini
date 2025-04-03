@@ -30,6 +30,12 @@ body h1.title span {
   background: #f00;
 }
 
+.title {
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .book-form {
   display: flex;
   flex-direction: column;
