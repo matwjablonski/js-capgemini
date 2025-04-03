@@ -1,0 +1,56 @@
+[
+  {
+    "id": "1847563920",
+    "title": "W pustyni i w puszczy",
+    "author": "Henryk Sienkiewicz",
+    "owner": "Anna Kowalska",
+    "isFavorite": false,
+    "readTimes": 0,
+    "category": "Przygodowa"
+  },
+  {
+    "id": "5692384701",
+    "title": "Pan Tadeusz",
+    "author": "Adam Mickiewicz",
+    "owner": "Piotr Nowak",
+    "isFavorite": true,
+    "readTimes": null,
+    "category": "Epopeja"
+  },
+  {
+    "id": "9374856102",
+    "title": "Król Edyp",
+    "author": "Sofokles",
+    "owner": "Maria Wiśniewska",
+    "isFavorite": false,
+    "readTimes": 1,
+    "category": "Tragedia"
+  },
+  {
+    "id": "2837465901",
+    "title": "Zbrodnia i kara",
+    "author": "Fiodor Dostojewski",
+    "owner": "Jan Wójcik",
+    "isFavorite": true,
+    "readTimes": 5,
+    "category": "Powieść psychologiczna"
+  },
+  {
+    "id": "6374859201",
+    "title": "Mistrz i Małgorzata",
+    "author": "Michaił Bułhakow",
+    "owner": "Katarzyna Lewandowska",
+    "isFavorite": false,
+    "readTimes": 2,
+    "category": "Fantastyka"
+  },
+  {
+    "id": "9283746510",
+    "title": "Wielki Gatsby",
+    "author": "F. Scott Fitzgerald",
+    "owner": "Tomasz Kamiński",
+    "isFavorite": true,
+    "readTimes": 4,
+    "category": "Powieść amerykańska"
+  }
+]
