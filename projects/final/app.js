@@ -76,6 +76,24 @@ const prepareBookItem = (book) => {
   bookCategory.classList.add("book-category");
   bookItem.appendChild(bookCategory);
 
+  const action = document.createElement("button");
+  
+  action.textContent = book.isFavorite ? "Usuń z ulubionych" : "Dodaj do ulubionych";
+  if (book.isFavorite) {
+    bookItem.classList.add("favorite");
+  }
+
+  action.classList.add("action-button");
+  bookItem.appendChild(action);
+
+  action.addEventListener("click", (event) => {
+    book.isFavorite = !book.isFavorite;
+    bookItem.classList.toggle("favorite");
+    action.textContent = book.isFavorite ? "Usuń z ulubionych" : "Dodaj do ulubionych";
+
+    
+  });
+
   return bookItem;
 }
 
@@ -88,17 +106,46 @@ const prepareBooksList = (app) => {
     list.appendChild(bookItem);
   });
 
-  list.addEventListener("click", (event) => {
-    if (event.target.tagName === "LI") {
-      event.target.classList.toggle("selected");
-    }
-  });
-
   app.appendChild(list);
 }
 
 const app = document.getElementById("app");
 prepareBooksList(app);
+const prepareForm = (app) => {
+  const form = document.createElement("form");
+  form.classList.add("book-form");
+
+  const titleInput = document.createElement("input");
+  titleInput.type = "text";
+  titleInput.placeholder = "Tytuł książki";
+  form.appendChild(titleInput);
+
+  const authorInput = document.createElement("input");
+  authorInput.type = "text";
+  authorInput.placeholder = "Autor książki";
+  form.appendChild(authorInput);
+
+  const categoryInput = document.createElement("input");
+  categoryInput.type = "text";
+  categoryInput.placeholder = "Kategoria książki";
+  form.appendChild(categoryInput);
+
+  const submitButton = document.createElement("button");
+  submitButton.type = "submit";
+  submitButton.textContent = "Dodaj książkę";
+  form.appendChild(submitButton);
+
+  form.addEventListener("submit", (event) => {
+    // prevent default form submission
+    // event.preventDefault();
+
+    // console.log(titleInput.value)
+  });
+
+  app.appendChild(form);
+}
+
+prepareForm(app);
 
 let counter = 0;
 
@@ -106,3 +153,24 @@ app.addEventListener("click", (event) => {
   counter++;
   console.log("Licznik kliknięć:", counter);
 }, { once: true });
+
+const message = document.createElement("p");
+message.textContent = "Nasza aplikacja nie obsługuje RWD!";
+message.style.color = "red";
+message.style.border = "1px solid red";
+message.style.padding = "10px"
+document.body.insertAdjacentElement("beforebegin", message);
+
+if (window.innerWidth < 800) {
+  message.style.display = "block";
+} else {
+  message.style.display = "none";
+}
+
+window.addEventListener('resize', () => {
+  if (window.innerWidth < 800) {
+    message.style.display = "block";
+  } else {
+    message.style.display = "none";
+  }
+})
