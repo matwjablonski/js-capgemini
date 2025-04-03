@@ -88,8 +88,21 @@ const prepareBooksList = (app) => {
     list.appendChild(bookItem);
   });
 
+  list.addEventListener("click", (event) => {
+    if (event.target.tagName === "LI") {
+      event.target.classList.toggle("selected");
+    }
+  });
+
   app.appendChild(list);
 }
 
 const app = document.getElementById("app");
 prepareBooksList(app);
+
+let counter = 0;
+
+app.addEventListener("click", (event) => {
+  counter++;
+  console.log("Licznik kliknięć:", counter);
+}, { once: true });
