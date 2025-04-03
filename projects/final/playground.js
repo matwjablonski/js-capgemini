@@ -168,6 +168,3 @@ class BooksList extends BooksListAbstract {
   }
 }
 
-const l = new BooksList();
-
-l.addBook();

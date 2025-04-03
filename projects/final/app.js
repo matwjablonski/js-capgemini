@@ -7,7 +7,6 @@ const generateRandomId = function (length = 16) {
   return id;
 }
 
-
 const rawBooks = [
   {
     title: "W pustyni i w puszczy",
@@ -59,77 +58,6 @@ const books = rawBooks.map((book) => ({
   owner: "Mateusz Jabłoński",
 }));
 
-const prepareBookItem = (book) => {
-  const bookItem = document.createElement("li");
-  bookItem.classList.add("book-item");
-
-  const bookTitle = document.createElement("h2");
-  bookTitle.textContent = book.title;
-  bookItem.appendChild(bookTitle);
-  
-  const bookAuthor = document.createElement("p");
-  bookAuthor.textContent = book.author;
-  bookItem.appendChild(bookAuthor);
-
-  const bookCategory = document.createElement("p");
-  bookCategory.textContent = 'Kategoria: ' + book.category;
-  bookCategory.classList.add("book-category");
-  bookItem.appendChild(bookCategory);
-
-  const action = document.createElement("button");
-  
-  action.textContent = book.isFavorite ? "Usuń z ulubionych" : "Dodaj do ulubionych";
-  if (book.isFavorite) {
-    bookItem.classList.add("favorite");
-  }
-
-  action.classList.add("action-button");
-  bookItem.appendChild(action);
-
-  action.addEventListener("click", (event) => {
-    book.isFavorite = !book.isFavorite;
-    bookItem.classList.toggle("favorite");
-    action.textContent = book.isFavorite ? "Usuń z ulubionych" : "Dodaj do ulubionych";
-
-    
-  });
-
-  return bookItem;
-}
-
-const prepareBooksList = (app) => {
-  const list = document.createElement("ul");
-  list.classList.add("books-list");
-
-  books.forEach((book) => {
-    const bookItem = prepareBookItem(book);
-    list.appendChild(bookItem);
-  });
-
-  app.appendChild(list);
-
-  return list;
-}
-
-const app = document.getElementById("app");
-const list = prepareBooksList(app);
-
-function addNewBook(title, author, isFavorite, category) {
-  const book = {
-    title,
-    author,
-    isFavorite,
-    readTimes: 0,
-    category, 
-    id: generateRandomId(),
-    owner: "Mateusz Jabłoński",
-  };
-
-  books.push(book);
-
-  return book;
-}
-
 const prepareForm = (app) => {
   const form = document.createElement("form");
   form.classList.add("book-form");
@@ -172,8 +100,6 @@ const prepareForm = (app) => {
     list.appendChild(bookItem);
   });
 
-  
-
   app.appendChild(form);
 }
 
@@ -207,12 +133,148 @@ window.addEventListener('resize', () => {
   }
 })
 
-class BooksList {
+class BooksListAbstract {
   constructor() {
-    if (new.target === BooksList) {
+    if (new.target === BooksListAbstract) {
       throw new Error("Nie można utworzyć instancji klasy BooksList");
     }
+
+    this.prepareBooksList();
+  }
+
+  prepareBooksList() {
+    throw new Error("Should be implemented in child class");
+  }
+
+  addBook() {
+    throw new Error("Should be implemented in child class");
   }
 }
 
-new BooksList();
+class BookAbstract {
+  constructor() {
+    if (new.target === BookAbstract) {
+      throw new Error("Nie można utworzyć instancji klasy Book");
+    }
+
+    this.prepareBookItem();
+  }
+
+  prepareBookItem() {
+    throw new Error("Should be implemented in child class");
+  }
+
+  handleFavorite() {
+    throw new Error("Should be implemented in child class");
+  }
+}
+
+class Book extends BookAbstract {
+  container;
+
+  constructor(data) {
+    super();
+
+    this.data = data;
+    this.prepareBookItem();
+  }
+
+  prepareBookItem() {}
+
+  handleFavorite() {}
+}
+
+class BooksList extends BooksListAbstract {
+  container;
+  booksList;
+  books;
+
+  constructor(container, data) {
+    super();
+
+    this.container = container;
+    this.books = data;
+  }
+
+  prepareBooksList() {
+    const list = document.createElement("ul");
+    list.classList.add("books-list");
+
+    this.books.forEach((book) => {
+      const bookInstance = new Book(book);
+      list.appendChild(bookInstance.container);
+    });
+
+    this.booksList = list;
+    this.container.appendChild(list);
+  }
+}
+
+class App {
+  constructor(container) {
+    new BooksList(container, books);
+  }
+}
+
+const app = document.getElementById("app");
+new App(app);
+
+
+// const prepareBookItem = (book) => {
+//   const bookItem = document.createElement("li");
+//   bookItem.classList.add("book-item");
+
+//   const bookTitle = document.createElement("h2");
+//   bookTitle.textContent = book.title;
+//   bookItem.appendChild(bookTitle);
+  
+//   const bookAuthor = document.createElement("p");
+//   bookAuthor.textContent = book.author;
+//   bookItem.appendChild(bookAuthor);
+
+//   const bookCategory = document.createElement("p");
+//   bookCategory.textContent = 'Kategoria: ' + book.category;
+//   bookCategory.classList.add("book-category");
+//   bookItem.appendChild(bookCategory);
+
+//   const action = document.createElement("button");
+  
+//   action.textContent = book.isFavorite ? "Usuń z ulubionych" : "Dodaj do ulubionych";
+//   if (book.isFavorite) {
+//     bookItem.classList.add("favorite");
+//   }
+
+//   action.classList.add("action-button");
+//   bookItem.appendChild(action);
+
+//   action.addEventListener("click", (event) => {
+//     book.isFavorite = !book.isFavorite;
+//     bookItem.classList.toggle("favorite");
+//     action.textContent = book.isFavorite ? "Usuń z ulubionych" : "Dodaj do ulubionych";
+
+    
+//   });
+
+//   return bookItem;
+// }
+
+
+
+
+// const list = prepareBooksList(app);
+
+// function addNewBook(title, author, isFavorite, category) {
+//   const book = {
+//     title,
+//     author,
+//     isFavorite,
+//     readTimes: 0,
+//     category, 
+//     id: generateRandomId(),
+//     owner: "Mateusz Jabłoński",
+//   };
+
+//   books.push(book);
+
+//   return book;
+// }
