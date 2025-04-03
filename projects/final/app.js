@@ -58,88 +58,58 @@ const books = rawBooks.map((book) => ({
   owner: "Mateusz Jabłoński",
 }));
 
-const prepareForm = (app) => {
-  const form = document.createElement("form");
-  form.classList.add("book-form");
+// const prepareForm = (app) => {
+//   const form = document.createElement("form");
+//   form.classList.add("book-form");
 
-  const titleInput = document.createElement("input");
-  titleInput.type = "text";
-  titleInput.name = 'title';
-  titleInput.placeholder = "Tytuł książki";
-  form.appendChild(titleInput);
+//   const titleInput = document.createElement("input");
+//   titleInput.type = "text";
+//   titleInput.name = 'title';
+//   titleInput.placeholder = "Tytuł książki";
+//   form.appendChild(titleInput);
 
-  const authorInput = document.createElement("input");
-  authorInput.type = "text";
-  authorInput.placeholder = "Autor książki";
-  authorInput.name = 'author';
-  form.appendChild(authorInput);
+//   const authorInput = document.createElement("input");
+//   authorInput.type = "text";
+//   authorInput.placeholder = "Autor książki";
+//   authorInput.name = 'author';
+//   form.appendChild(authorInput);
 
-  const categoryInput = document.createElement("input");
-  categoryInput.type = "text";
-  categoryInput.name = 'category';
-  categoryInput.placeholder = "Kategoria książki";
-  form.appendChild(categoryInput);
+//   const categoryInput = document.createElement("input");
+//   categoryInput.type = "text";
+//   categoryInput.name = 'category';
+//   categoryInput.placeholder = "Kategoria książki";
+//   form.appendChild(categoryInput);
 
-  const submitButton = document.createElement("button");
-  submitButton.type = "submit";
-  submitButton.textContent = "Dodaj książkę";
-  form.appendChild(submitButton);
+//   const submitButton = document.createElement("button");
+//   submitButton.type = "submit";
+//   submitButton.textContent = "Dodaj książkę";
+//   form.appendChild(submitButton);
 
-  form.addEventListener("submit", (event) => {
-    event.preventDefault();
-    const data = new FormData(event.target);
+//   form.addEventListener("submit", (event) => {
+//     event.preventDefault();
+//     const data = new FormData(event.target);
 
-    const book = addNewBook(
-      data.get("title"),
-      data.get("author"),
-      false,
-      data.get("category")
-    );
+//     const book = addNewBook(
+//       data.get("title"),
+//       data.get("author"),
+//       false,
+//       data.get("category")
+//     );
     
-    const bookItem = prepareBookItem(book);
-    list.appendChild(bookItem);
-  });
+//     const bookItem = prepareBookItem(book);
+//     list.appendChild(bookItem);
+//   });
 
-  app.appendChild(form);
-}
+//   app.appendChild(form);
+// }
 
-prepareForm(app);
-
-let counter = 0;
-
-app.addEventListener("click", (event) => {
-  counter++;
-  console.log("Licznik kliknięć:", counter);
-}, { once: true });
-
-const message = document.createElement("p");
-message.textContent = "Nasza aplikacja nie obsługuje RWD!";
-message.style.color = "red";
-message.style.border = "1px solid red";
-message.style.padding = "10px"
-document.body.insertAdjacentElement("beforebegin", message);
-
-if (window.innerWidth < 800) {
-  message.style.display = "block";
-} else {
-  message.style.display = "none";
-}
-
-window.addEventListener('resize', () => {
-  if (window.innerWidth < 800) {
-    message.style.display = "block";
-  } else {
-    message.style.display = "none";
-  }
-})
+// prepareForm(app);
 
 class BooksListAbstract {
-  constructor() {
+  constructor(container, data) {
     if (new.target === BooksListAbstract) {
       throw new Error("Nie można utworzyć instancji klasy BooksList");
     }
-
-    this.prepareBooksList();
   }
 
   prepareBooksList() {
@@ -152,7 +122,11 @@ class BooksListAbstract {
 }
 
 class BookAbstract {
-  constructor() {
+  data;
+
+  constructor(data) {
+    this.data = data;
+
     if (new.target === BookAbstract) {
       throw new Error("Nie można utworzyć instancji klasy Book");
     }
@@ -171,17 +145,73 @@ class BookAbstract {
 
 class Book extends BookAbstract {
   container;
+  data;
 
   constructor(data) {
-    super();
+    super(data);
 
     this.data = data;
     this.prepareBookItem();
   }
 
-  prepareBookItem() {}
+  prepareBookItem() {
+    const bookItem = document.createElement("li");
+    bookItem.classList.add("book-item");
 
-  handleFavorite() {}
+    if (this.data.isFavorite) {
+      bookItem.classList.add("favorite");
+    }
+
+    this.container = bookItem;
+
+    this.renderTitle();
+    this.renderAuthor();
+    this.renderCategory();
+
+    this.renderActionButton();
+  }
+
+  renderTitle() {
+    const bookTitle = document.createElement("h2");
+    bookTitle.textContent = this.data.title;
+
+    this.container.appendChild(bookTitle);
+  }
+
+  renderAuthor() {
+    const bookAuthor = document.createElement("p");
+    bookAuthor.textContent = this.data.author;
+
+    this.container.appendChild(bookAuthor);
+  }
+  
+  renderCategory() {
+    const bookCategory = document.createElement("p");
+    bookCategory.textContent = 'Kategoria: ' + this.data.category;
+    bookCategory.classList.add("book-category");
+  
+    this.container.appendChild(bookCategory);
+  }
+
+  renderActionButton() {
+    const action = document.createElement("button");
+    action.textContent = this.prepareTextForActionButton();
+  
+    action.classList.add("action-button");
+    this.container.appendChild(action);
+
+    action.addEventListener('click', this.handleFavorite.bind(this));
+  }
+
+  prepareTextForActionButton() {
+    return this.data.isFavorite ? "Usuń z ulubionych" : "Dodaj do ulubionych";
+  }
+
+  handleFavorite(event) {
+    this.data.isFavorite = !this.data.isFavorite;
+    event.target.textContent = this.prepareTextForActionButton();
+    this.container.classList.toggle("favorite");
+  }
 }
 
 class BooksList extends BooksListAbstract {
@@ -190,10 +220,12 @@ class BooksList extends BooksListAbstract {
   books;
 
   constructor(container, data) {
-    super();
+    super(container, data);
 
     this.container = container;
     this.books = data;
+
+    this.prepareBooksList();
   }
 
   prepareBooksList() {
@@ -219,49 +251,26 @@ class App {
 const app = document.getElementById("app");
 new App(app);
 
+// const message = document.createElement("p");
+// message.textContent = "Nasza aplikacja nie obsługuje RWD!";
+// message.style.color = "red";
+// message.style.border = "1px solid red";
+// message.style.padding = "10px"
+// document.body.insertAdjacentElement("beforebegin", message);
 
-// const prepareBookItem = (book) => {
-//   const bookItem = document.createElement("li");
-//   bookItem.classList.add("book-item");
-
-//   const bookTitle = document.createElement("h2");
-//   bookTitle.textContent = book.title;
-//   bookItem.appendChild(bookTitle);
-  
-//   const bookAuthor = document.createElement("p");
-//   bookAuthor.textContent = book.author;
-//   bookItem.appendChild(bookAuthor);
-
-//   const bookCategory = document.createElement("p");
-//   bookCategory.textContent = 'Kategoria: ' + book.category;
-//   bookCategory.classList.add("book-category");
-//   bookItem.appendChild(bookCategory);
-
-//   const action = document.createElement("button");
-  
-//   action.textContent = book.isFavorite ? "Usuń z ulubionych" : "Dodaj do ulubionych";
-//   if (book.isFavorite) {
-//     bookItem.classList.add("favorite");
-//   }
-
-//   action.classList.add("action-button");
-//   bookItem.appendChild(action);
-
-//   action.addEventListener("click", (event) => {
-//     book.isFavorite = !book.isFavorite;
-//     bookItem.classList.toggle("favorite");
-//     action.textContent = book.isFavorite ? "Usuń z ulubionych" : "Dodaj do ulubionych";
-
-    
-//   });
-
-//   return bookItem;
+// if (window.innerWidth < 800) {
+//   message.style.display = "block";
+// } else {
+//   message.style.display = "none";
 // }
 
-
-
-
-// const list = prepareBooksList(app);
+// window.addEventListener('resize', () => {
+//   if (window.innerWidth < 800) {
+//     message.style.display = "block";
+//   } else {
+//     message.style.display = "none";
+//   }
+// })
 
 // function addNewBook(title, author, isFavorite, category) {
 //   const book = {

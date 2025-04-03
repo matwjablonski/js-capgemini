@@ -168,3 +168,9 @@ class BooksList extends BooksListAbstract {
   }
 }
 
+let counter = 0;
+
+app.addEventListener("click", (event) => {
+  counter++;
+  console.log("Licznik kliknięć:", counter);
+}, { once: true });
