@@ -65,6 +65,7 @@ class Book extends BookAbstract {
     } = this;
 
     const bookAuthor = document.createElement("p");
+    bookAuthor.dataset.testId = "test-id-book-author";
     bookAuthor.textContent = author;
 
     container.appendChild(bookAuthor);
