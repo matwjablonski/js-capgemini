@@ -35,8 +35,8 @@ class BooksList extends BooksListAbstract {
     list.classList.add("books-list");
 
     this.books.forEach((book) => {
-      const bookInstance = new Book(book);
-      list.appendChild(bookInstance.container);
+      const { container } = new Book(book);
+      list.appendChild(container);
     });
 
     this.booksList = list;

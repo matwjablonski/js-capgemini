@@ -3,6 +3,8 @@
 //   //   return true;
 //   // }
 
+import { name } from 'browser-sync';
+
 //   // return false;
 
 //   return book.isFavorite;
@@ -175,12 +177,59 @@
 //   console.log("Licznik kliknięć:", counter);
 // }, { once: true });
 
-class AppError extends Error {
-  constructor(message, moduleName = 'App') {
-    super(message);
-    this.name = '[Moduł ' + moduleName + ']';
-  }
-}
+// class AppError extends Error {
+//   constructor(message, moduleName = 'App') {
+//     super(message);
+//     this.name = '[Moduł ' + moduleName + ']';
+//   }
+// }
 
-// throw new Error('Nie można utworzyć instancji klasy AppError');
-throw new AppError('Nie można utworzyć instancji klasy AppError');
+// // throw new Error('Nie można utworzyć instancji klasy AppError');
+// throw new AppError('Nie można utworzyć instancji klasy AppError');
+
+// const array = [1, 2, 3, 4, 6, 7];
+
+// // const el1 = array[0];
+// // const el4 = array[3];
+
+// const [a, , , d] = array;
+
+
+// const [first, ...rest] = array;
+
+// rest // [2, 3, 4, 6, 7]
+
+// const person = {
+//   name: 'Jan',
+//   age: 30,
+//   skills: {
+//     programming: ['JavaScript', 'Python'],
+//     languages: ['Polski', 'Angielski'],
+//     other: ['Git', 'Docker'],
+//   },
+// };
+
+// const {
+//   name: nameValue,
+//   age,
+//   getName,
+//   skills: {
+//     programming,
+//     languages,
+//     other,
+//   }
+// } = person;
+
+// person.name; // Jan
+// nameValue // Jan
+// person.skills.programming; // ['JavaScript', 'Python']
+// programming // ['JavaScript', 'Python']
+
+// import styled from 'styled-components';
+
+// const Div = styled.div`
+//   background-color: red;
+//   color: white;
+//   font-size: 20px;
+//   padding: 20px;
+// `;
