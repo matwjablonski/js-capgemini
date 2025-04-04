@@ -56,15 +56,22 @@ class Book extends BookAbstract {
   }
 
   renderAuthor() {
-    const bookAuthor = document.createElement("p");
-    bookAuthor.textContent = this.data.author;
+    const {
+      data: {
+        author,
+      },
+      container,
+    } = this;
 
-    this.container.appendChild(bookAuthor);
+    const bookAuthor = document.createElement("p");
+    bookAuthor.textContent = author;
+
+    container.appendChild(bookAuthor);
   }
   
   renderCategory() {
     const bookCategory = document.createElement("p");
-    bookCategory.textContent = 'Kategoria: ' + this.data.category;
+    bookCategory.textContent = `Kategoria: ${this.data.category}`;
     bookCategory.classList.add("book-category");
   
     this.container.appendChild(bookCategory);
@@ -85,9 +92,12 @@ class Book extends BookAbstract {
   }
 
   handleFavorite(event) {
+    const {
+      container,
+    } = this;
     this.data.isFavorite = !this.data.isFavorite;
     event.target.textContent = this.prepareTextForActionButton();
-    this.container.classList.toggle("favorite");
+    container.classList.toggle("favorite");
   }
 }
 

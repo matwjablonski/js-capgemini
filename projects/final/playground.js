@@ -233,3 +233,37 @@ import { name } from 'browser-sync';
 //   font-size: 20px;
 //   padding: 20px;
 // `;
+
+// const a = {
+//   name: 'Adam',
+// }
+// const b = a;
+// b.name = 'Jan';
+// console.log(a.name); // Jan
+
+// const c = "Adam"
+// const d = c;
+// d = "Jan";
+// console.log(c); // Adam
+
+
+// function f(a) {
+//  return a + (arguments.length - 1)
+// }
+
+// f(2, '32da', false) // 2 + 2 = 4
+
+// function g(x, y, z) {
+//   return x + y + z;
+// }
+
+// const arr = [1, 2, 3];
+// g(...arr); // 6
+
+// g(arr[0], arr[1], arr[2]); // 6
+
+
+const newSymbol1 = Symbol('test');
+const newSymbol2 = Symbol('test');
+
+console.log(newSymbol1 === newSymbol2); // false

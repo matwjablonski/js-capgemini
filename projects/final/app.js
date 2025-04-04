@@ -30,8 +30,13 @@ class App {
   }
 
   prepareBooks() {
-    this.bookListInstance = new BooksList(this.container, this.books);
-    new BookForm(this.container, this.bookListInstance.addNewBook.bind(this.bookListInstance));
+    const {
+      container,
+      books,
+    }= this;
+
+    this.bookListInstance = new BooksList(container, books);
+    new BookForm(container, this.bookListInstance.addNewBook.bind(this.bookListInstance));
   }
 
   initGlobalEvents() {
@@ -48,19 +53,28 @@ class App {
   }
 
   displayWarningForRwdMode() {
+    const {
+      style,
+    } = this.message;
+
     if (window.innerWidth < 800) {
-      this.message.style.display = "block";
+      style.display = "block";
     } else {
-      this.message.style.display = "none";
+      style.display = "none";
     }
   }
 
   prepareRwdWarning() {
     const message = document.createElement("p");
-    message.textContent = "Nasza aplikacja nie obsługuje RWD!";
-    message.style.color = "red";
-    message.style.border = "1px solid red";
-    message.style.padding = "10px"
+    const {
+      textContent,
+      style,
+    } = message;
+    textContent = "Nasza aplikacja nie obsługuje RWD!";
+    style.color = "red";
+    style.border = "1px solid red";
+    style.padding = "10px";
+
     document.body.insertAdjacentElement("beforebegin", message);
 
     this.message = message;
