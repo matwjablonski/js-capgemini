@@ -2,7 +2,7 @@ import BookForm from "./BookForm.js";
 import BooksList from './BooksList.js';
 import { AppError } from './utils.js';
 
-class App {
+export class App {
   constructor(container) {
     this.container = container;
 
@@ -66,7 +66,7 @@ class App {
 
   prepareRwdWarning() {
     const message = document.createElement("p");
-    const {
+    let {
       textContent,
       style,
     } = message;

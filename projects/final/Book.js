@@ -50,6 +50,7 @@ class Book extends BookAbstract {
 
   renderTitle() {
     const bookTitle = document.createElement("h2");
+    bookTitle.dataset.testId = "test-id-book-title";
     bookTitle.textContent = this.data.title;
 
     this.container.appendChild(bookTitle);

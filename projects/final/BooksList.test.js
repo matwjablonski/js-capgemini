@@ -22,4 +22,21 @@ describe('BooksList', () => {
 
     expect(list.children.length).toBe(data.length);
   });
+
+  test('should add a new book to the list', () => {
+    const newBook = { 
+      title: 'New Book',
+      author: 'New Author',
+      category: 'New Category',
+      isFavorite: false,
+      readTimes: 0,
+      id: 'new-id',
+      owner: 'Mateusz Jabłoński',
+    }
+
+    booksList.addNewBook(newBook);
+    const list = container.querySelector('.books-list');
+    
+    expect(list.children.length).toBe(3);
+  })
 });
