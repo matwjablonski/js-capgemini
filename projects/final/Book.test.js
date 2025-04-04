@@ -16,6 +16,10 @@ describe('Book', () => {
     document.body.removeChild(container);
   });
 
+  test('should match the snapshot', () => {
+    expect(book.container).toMatchSnapshot();
+  });
+
   test('should create a book item', () => {
     expect(book.container.classList.contains('book-item')).toBe(true);
   });

@@ -1,0 +1,28 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Book should match the snapshot 1`] = `
+<li
+  class="book-item"
+>
+  <h2
+    data-test-id="test-id-book-title"
+  >
+    test
+  </h2>
+  <p
+    data-test-id="test-id-book-author"
+  >
+    test
+  </p>
+  <p
+    class="book-category"
+  >
+    Kategoria: test
+  </p>
+  <button
+    class="action-button"
+  >
+    Dodaj do ulubionych
+  </button>
+</li>
+`;
